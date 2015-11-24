@@ -1,0 +1,7 @@
+*.swp
+*.swo
+*.un~
+.vim/bundle/*
+!.vim/bundle/neobundle.vim
+!.vim/neosnippets
+!.vim/vim-quickrun

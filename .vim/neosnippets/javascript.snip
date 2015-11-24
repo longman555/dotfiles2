@@ -1,0 +1,165 @@
+snippet     comment
+alias       
+abbr        comment
+options     head
+    /*
+     * ${1:#: comment please}
+     */
+     ${0}
+
+snippet     if
+options     head
+  if (${1:#:condition}) {
+    ${0:TARGET}
+  }
+
+snippet     elseif
+alias       elif
+abbr        else if(){}
+options     head
+    else if (${1:#:condition}) {
+        ${0}
+    }
+
+snippet     else
+abbr        else{}
+options     head
+    else {
+        ${0}
+    }
+
+snippet     ifelse
+abbr        if(){}else{}
+options     head
+  if (${1:#:condition}) {
+      ${2:TARGET}
+  } 
+  else {
+      ${3:TARGET}
+  }
+
+snippet     for
+alias       fori, forgt
+options     head
+  for (var ${1:#:iden} = 0; $1 < ${2:#:upper_limit}; ++$1) {
+    ${0:TARGET}
+  }
+
+snippet     form
+alias       ford, forlt
+abbr        for(--var){}
+options     head
+    for (var ${1:#:iden} = ${2:#:init_val}; $1 >${3:=} ${4:#:lower_limit}; --$1) {
+        ${0:TARGET}
+    }
+
+snippet     forin
+options     head
+  for (var ${1:#:e} in ${2:#:src}) {
+    ${0:TARGET}
+  }
+
+snippet     while
+abbr        while(){}
+options     head
+    while (${1:#:condition}) {
+        ${0:TARGET}
+    }
+
+snippet     var
+abbr        variable decl
+options     head
+    var ${1:#:iden} = ${2:#:body};${0}
+
+snippet :f
+options head
+  ${1:#:method_name}: function(${2:#:attribute}) {
+    ${0:TARGET}
+  }
+
+snippet function
+abbr    function(){}
+options word
+  function ${1:#:func_name}(${2:#:args}) {
+      ${0:TARGET}
+  }
+
+snippet proto
+options head
+  ${1:#:class_name}.prototype.${2:#:method_name} = function(${3:#:first_argument}) {
+    ${0:TARGET}
+  };
+
+
+snippet key-value
+abbr :,
+options word
+  ${1:#:value_name}: ${0:#:value},
+
+#snippet key
+#options word
+#  ${1:#:key}: "${2:#:value}"}${3:, }
+
+snippet     settimeout
+alias       setTimeout
+abbr        id setTimeout(cb,ms[,a1,a2,.,]);
+options     head
+    setTimeout(function() {
+        ${2:TARGET}
+    }, ${1:#:millis}${3:, undefined});${0}
+
+snippet     cleartimeout
+abbr        clearTimeout(id)
+options     head
+    clearTimeout(${1:#:id});${0}
+
+snippet     setinterval
+alias       setInterval
+abbr        id setInterval(cb,ms[,a1,a2,.,]);
+options     head
+    setInterval(function() {
+        ${2:TARGET}
+    }, ${1:#:millis}${3:, undefined});${0}
+
+snippet     clearinterval
+abbr        clearInterval(id);
+options     head
+    clearInterval(${1:#:id});${0}
+
+snippet     console.log
+alias       log
+options     word
+  console.log(${1:#:message});${0}
+
+snippet     console.log_format
+alias       logformat
+abbr        console.log(format,arg1,...)
+options     word
+    console.log("${1:#:formatter}"${2:#:, args1});${0}
+
+
+snippet     require
+abbr        require(uri)
+options     head
+    var ${1:#:module_name} = require(${2:#:uri});${0}
+
+# jQuery
+snippet     ready
+alias       documentready, onready
+abbr        $(document).ready
+options     head
+    $(document).ready(function(){
+
+        ${0}
+
+    });
+
+snippet     load
+alias       windowonload, onload
+abbr        $(window).load
+options     head
+    $(window).load(function(){
+
+        ${0}
+
+    })

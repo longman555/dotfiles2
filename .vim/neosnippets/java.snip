@@ -1,0 +1,535 @@
+
+snippet     assert
+    assert ${1:#:should-be-true} : ${2:#:message-when-false};${0}
+
+snippet     if
+    if (${1}) {
+        ${2:TARGET}
+    }
+
+snippet     else
+abbr        else {}
+options     head
+    else {
+        ${0:TARGET}
+    }
+
+snippet     elseif
+alias       elif
+abbr        else if(){}
+options     head
+    else if (${1}) {
+        ${2:TARGET}
+    }
+
+snippet     for
+alias       fori, forgt
+abbr        for-greater-than () {}
+    for (${1:int} ${2:#:var_name} = 0; $2 < ${3}; ++$2) {
+        ${0:TARGET}
+    }
+
+snippet     ford
+alias       form, forlt
+abbr        for-less-than(){}
+    for (${1:#:T} ${2:#:var_name} = ${3}; $1 >${4:=} ${5}; --$1) {
+        ${0:TARGET}
+    }
+
+snippet     enhanced-for
+alias       en-for
+abbr        for (T e : src){}
+    for (${1} : ${2}) {
+        ${3:TARGET}
+    }
+
+snippet     do_while
+abbr        do{}while();
+options     head
+    do {
+        ${0:TARGET}
+    } while (${1:#:condition});
+
+snippet while
+    while (${1}) {
+        ${2:TARGET}
+    }
+
+snippet     switch
+abbr        switch () {}
+	switch (${1:#:var}) {
+		case ${2:#:val}:
+			${3:TARGET}
+			break;
+		${4}
+	}${0}
+
+snippet case
+abbr    case Val: ... break;
+	case ${1:#:val}:
+		${2:TARGET}
+		break;
+	${0}
+
+snippet default
+abbr    default: ... break;
+	default:
+		${1:#:something}
+		break;
+
+snippet try
+    try {
+        ${0:TARGET}
+    }
+    catch (${1:Exception} ${2:e}) {
+        ${3:e.printStackTrace();}
+    }
+
+snippet try_resources
+    try (${1:#:Resources}) {
+        ${0:TARGET}
+    } catch (${2:Exception} ${3:e}) {
+        ${4:e.printStackTrace();}
+    }
+
+snippet try_finally
+    try {
+        ${0:TARGET}
+    } catch (${1:Exception} ${2:e}) {
+        ${3:e.printStackTrace();}
+    } finally {
+        ${4}
+    }
+
+snippet catch
+    catch (${1:Exception} ${2:e}) {
+        ${0:e.printStackTrace();}
+    }
+
+snippet finally
+    finally {
+        ${0:TARGET}
+    }
+
+snippet th
+    throw ${0}
+
+snippet syncronized
+    synchronized
+
+snippet interface
+    interface ${1} ${2:extends} ${3:#:Parent} {
+        ${0:TARGET}
+    }
+
+snippet method
+    ${1:void} ${2:#:method}(${3}) ${4:#:throws} {
+        ${0:TARGET}
+    }
+
+snippet psmethod
+    public static ${1:void} ${2:#:method_name}(${3}) ${4:#:throws} {
+        ${0:TARGET}
+    }
+
+snippet enum
+abbr enum {}
+    enum ${1:#:name} {
+        ${0:TARGET}
+    }
+
+snippet var
+    ${1:#:type} ${2:#:var}${3};
+
+snippet const
+    static public final ${1:#:type} ${2:#:var} = ${3};${4}
+
+snippet const_string
+    static public final String ${1:var} = "${2}";${4}
+
+snippet main
+    public static void main(String[] args) {
+        ${0}
+    }
+
+snippet     classmain
+alias   
+abbr        class FileName {}
+    public class `expand("%:r")` ${1:extends }${2:#:Base} ${3:implements }${4:#:interfase} {
+        	
+        ${0:TARGET}
+        	
+    }
+
+snippet     classsimple
+alias       
+abbr        simple class FileName
+options     head
+    /*
+     * ${1:#:description}
+     */
+    public class `expand("%:r")` {
+
+        public static void main(String[] args) {
+
+            ${0:TARGET}
+
+        }
+    }
+
+#snippet mainclasstest
+#alias   class3, main3
+#abbr    class file_name+Test ... main()
+#    public class `expand("%:r")`Test {
+#        public static void main(String[] args) {
+#            	
+#            ${0:TARGET}
+#            	
+#        }
+#    }
+
+# general method
+snippet     println
+alias       sysout, sout
+    System.out.println(${1});${0}
+
+snippet     print
+alias       sout_w/o_nl
+    System.out.print(${1});${0}
+
+snippet     printf
+alias       sysoutf, soutf
+    System.out.printf("${1}\n", ${2:#:args...});${0}
+
+snippet     format
+alias       fmt
+abbr        String.format()
+    String.format("${1}", ${2:#:args...});${0}
+
+snippet     sleep
+abbr        Thread.sleep(long)
+options     head
+    Thread.sleep(${1:#:millis});${0}
+
+snippet     sleep_with_try
+abbr        try{sleep}catch
+options     head
+    try {
+        Thread.sleep(${1:#:millis});
+    }
+    catch (InterruptedException ex) {
+        ex.printStackTrace();
+    }
+
+snippet     wait
+abbr        sync-while-try-wait-cactch
+options     head
+    syncronized (${1:#:sync_obj}) {
+        while (${2:#:condition_to_meet}) {
+            try {
+                $1.wait();
+            }
+            catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+            ${0:TARGET}
+        }
+    }
+
+# Runnable jdk <  1.8
+snippet     runnable
+abbr        new Runnable(){}
+options     word
+    new Runnable() {
+        public void run() {
+            ${0:TARGET}
+        }
+    }
+
+snippet     runnable_w/var
+abbr        Runnable run = new ...;
+options     head
+    Runnable ${1:#:var_name} = new Runnable() {
+        public void run() {
+            ${0:TARGET}
+        }
+    };
+
+# Runnable jdk >= 1.8
+snippet     runnable_lambda
+abbr        ()->{}
+options     word
+    () -> {
+        ${0:TARGET}
+    }
+
+snippet     runnable_lambda_w/var
+abbr        Runnable run = ()->{}
+options     head
+    Runnable ${1:#:var_name} = () -> {
+        ${0:TARGET}
+    };
+
+# Thread
+snippet     thread_w/var
+abbr        Thread t1 = new(()->{})
+options     head
+    Thread ${1:#:t} = new Thread(() -> {
+        ${0:TARGET}
+    }${2:#:, thread_name});
+
+snippet     thread_w/var_old
+abbr        Thread t1 = new(newR)
+options     head
+    Thread ${1:#:t_var} = new Thread(new Runnable() {
+        public static void run() {
+            ${0:TARGET}
+        }
+    }${2:#:, thread_name});
+
+snippet     thread_start
+abbr        new Thread(R).start();
+options     word
+    new Thread(() -> {
+        ${0:TARGET}
+    }${1:#:, thread_name}).start();
+
+snippet     thread_start_old
+abbr        new Thread(R).start();
+options     word
+    new Thread(new Runnable() {
+        public static void run() {
+            ${0:TARGET}
+        }
+    }${2:#:, thread_name}).start();
+
+# java.util.*;
+snippet     random
+abbr        new Random rand =...;
+options     head
+    Random ${1:rand} = new Random(${2:#:long:seed});${0}
+
+# java.io.*;
+snippet     bufferdreader_w/try
+alias       bufedreader_w/try
+abbr        try(BR(FR(F))){}catch(){}
+options     head
+    try (BufferedReader ${1:br} = new BufferedReader(new FileReader(${2:#:file}));) {
+        ${0:TARGET}
+    }
+    catch (${3:Exception} ex) {
+        ${4:ex.printStackTrace()};
+    }
+
+# java.util.function.*;
+snippet func
+alias   Function
+abbr    Function<T,R>#R apply(T)
+options     word
+    (${1:lhs}) -> ${2:TARGET}${0:#:;}
+
+snippet bifunc
+alias   BiFunction
+abbr    BiFunction<T,U,R>#R apply(T,U)
+options     word
+    (${1:lhs}, ${2:rhs}) -> ${3:TARGET}${0:#:;}
+
+snippet cons
+alias   Consumer
+abbr    Consumer<T>#void accept(T)
+options     word
+    (${1:lhs}) -> ${2:TARGET}${0:#:;}
+
+snippet bicons
+alias   BiConsumer
+abbr    BiConsumer<T,U>#void accept(T,U)
+options     word
+    (${1:lhs}, ${2:rhs}) -> ${3:TARGET}${0:#:;}
+
+snippet supp
+alias   Supplier
+abbr    Supplier<T>#T get()
+options     word
+    () ->  ${1:TARGET}${0:#:;}
+
+snippet pred
+alias   Predicate
+abbr    Predicate<T>#boolean test(T)
+options     word
+    (${1:lhs}) -> ${2:TARGET}${0:#:;}
+
+# java.util.stream.Stream<T>#method
+snippet     forEach
+alias       foreach
+abbr        forEach(Cons<?supT>)
+options     word
+    forEach(${1:var} -> ${2:TARGET});${0}
+
+snippet     map
+abbr        map(Func<?supT,?extR>)
+options     word
+    map(${1:var} -> ${2:TARGET})${0}
+
+snippet     filter
+abbr        filter(Pred<?supT>)
+options     word
+    filter(${1:var} -> ${2:TARGET})${0}
+
+snippet     reduce1
+abbr        Opt<T> reduce(BiOp<T>)
+options     word
+    reduce((${1:lhs}, ${2:rhs}) -> ${3:TARGET})${0}
+
+snippet     reduce2
+abbr        T reduce(T,BiOp<T>)
+options     word
+    reduce(${1:#:T:identity}, (${2:lhs}, ${3:rhs}) -> ${4:TARGET})${0}
+
+snippet     reduce3
+abbr        U reduce(U,BiFn<U,?supT,U>,BiOp<U>)
+options     word
+    reduce(${1:#:U:identity}, 
+           (${2:uLhs}, ${3:tRhs}) -> ${4:ACCUMULATE},
+           (${5:uLhs}, ${6:uRhs}) -> ${7:COMBINE} )
+
+# TODO will implement later...
+#snippet     collect1
+#abbr        R collect(Collector<?supT,A,R>)
+#    collect(${1:Collect});${0}
+#options     head
+#    #:TARGET
+
+snippet     collect2
+abbr        R collect(Sup<R>,BiCo<R,?supT>,BiCo<R,R>)
+options     word
+    collect(() -> ${1:Supply},
+            (${2:rLhs}, ${3:tRhs}) -> ${4:BiConsume},
+            (${5:rLhs}, ${6:rRhs}) -> ${7:BiConsume} );${0}
+
+# import statement
+snippet     import
+alias       
+options     head
+    import ${1:#:package or class};${0}
+
+snippet     static-import
+alias       
+abbr        import static ...;
+options     head
+    import static ${1:#:method or constant};${0}
+
+snippet testclass
+alias   tc
+    public class ${1} extends ${2:TestCase} {
+        ${0:TARGET}
+    }
+
+snippet test
+    public void test${1:#:Name}() throws Exception {
+        ${0:TARGET}
+    }
+
+snippet j.u
+    java.util.
+
+snippet j.i
+    java.io.
+
+snippet j.b
+    java.beans.
+
+snippet j.n
+    java.net
+
+snippet j.m
+    java.math.
+
+# javadoc
+snippet comment
+    /**
+     * ${0:TARGET}
+     */
+
+snippet author
+    @author ${0:$TM_FULLNAME}
+
+snippet {code
+    {@code ${0}
+
+snippet deprecated
+    @deprecated ${0:#:description}
+
+snippet {docRoot
+    {@docRoot
+
+snippet {inheritDoc
+    {@inheritDoc
+
+snippet {link
+    {@link ${1:#:target} ${0:#:label}
+
+snippet {linkplain
+    {@linkplain ${1:#:target} ${0:#:label}
+
+snippet {literal
+    {@literal ${0}
+
+snippet param
+    @param ${1:#:var} ${0:#:description}
+
+snippet return
+    @return ${0:#:description}
+
+snippet see
+    @see ${0:#:reference}
+
+snippet serial
+    @serial ${0:#:description}
+
+snippet sd
+    @serialField ${0:#:description}
+
+snippet sf
+    @serialField ${1:#:name} ${2:#:type} ${0:#:description}
+
+snippet since
+    @since ${0:#:version}
+
+snippet throws
+    @throws ${1:#:class} ${0:#:description}
+
+snippet {value
+    {@value ${0}
+
+snippet version
+alias ver
+    @version ${0:#:version}
+
+snippet     helloworld
+options     head
+  public class ${1:Hello} {
+    static public void main(String args[]) {
+      System.out.println("Hello, world!");
+    }
+  }
+
+# java.lang
+snippet     p
+alias       pimpl, p-impl, p_impl
+abbr        println(msg)
+options     head
+    static void p(String msg) { System.out.println(msg); }
+
+snippet     pf
+alias       pf1, pf1impl,pf1-impl,pf1_impl
+abbr        printf(fmt,a)
+options     head
+    static void pf(String fmt, Object a) { System.out.printf(fmt, a); }
+
+snippet     pf2
+alias       pf2, pf2impl,pf2-impl,pf2_impl
+abbr        printf(fmt,a1,a2)
+options     head
+    static void pf(String fmt, Object a1, Object a2) {
+        System.out.printf(fmt, a1, a2);
+    }

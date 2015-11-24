@@ -1,0 +1,171 @@
+include c.snip
+
+# macro
+snippet     pragma-clang-diag-ignored 
+alias       diag-ignored
+abbr        diagnostic ignored
+options     head
+    #pragma clang diagnostic ignored "-W${1:#:warning}"${0}
+
+# #include <...>
+snippet     inc
+alias       #inc, #include
+    #include <${1:iostream}>${0}
+
+# #include "..."
+snippet     inc2
+alias       #inc2, #include2
+    #include "${1}"${0}
+
+snippet     usingstd
+alias       
+abbr        using ns std
+options     head
+    using namespace std;
+
+snippet     using
+alias       
+abbr        using ...
+options     head
+    using ${1:#:type};${0}
+
+snippet     try
+abbr        try catch
+    try {
+        ${1:TARGET}
+    }
+    catch (${2:e:xception}) {
+        ${3}
+    }
+
+# range based for ( C++11 feature )
+snippet     for_CPP11
+abbr        for (:) {}
+    for (${1:auto&& }${2:var} : ${3:container}) {
+        ${0:TARGET}
+    }
+
+# lambda expression ( C++11 feature )
+snippet     lambda
+abbr        [](){}
+    [${1:#:capture}](${2:#:params})${3:#: ret-val}{ ${0:TARGET} }
+
+# scoped enumeration ( C++11 feature )
+snippet     enum_scoped
+abbr        enum struct {}
+    enum struct { ${1:TARGET} }
+
+# static assert ( C++11 feature )
+snippet     static_assert
+abbr        static_assert(,"")
+    static_assert(${1:#:should-be-true}, "${2:#:message-on-false}");${0}
+
+delete      namespace
+snippet     namespace
+abbr        namespace {}
+options     head
+    namespace ${1:#:name} {
+        ${0:TARGET}
+    } // END namespace $1
+
+snippet     static_cast
+abbr        static_cast<>()
+options     word
+    static_cast<${1}>(${2})${0}
+
+snippet     reinterpret_cast
+abbr        reinterpret_cast<>()
+options     word
+    reinterpret_cast<${1}>(${2})${0}
+
+snippet     const_cast
+abbr        const_cast<>()
+options     word
+    const_cast<${1}>(${2})${0}
+
+snippet     dynamic_cast
+abbr        dynamic_cast<>()
+options     word
+    dynamic_cast<${1}>(${2})${0}
+
+snippet     auto-decltype
+alias       
+abbr        auto-decltye
+options     head
+    auto ${1:#:func-name}(${2:#:params...}) 
+    -> decltype(${3:#:uneval}) {
+            ${0:TARGET}
+    }
+
+snippet     template
+abbr        template <T>
+    template <class ${1:T}>
+    ${0} 
+	
+		
+snippet     class
+abbr        class {}
+    class ${1:#:name}${2:#:\: Base} {
+	`printf("  %s", "public:")`
+		$1(${2});
+
+	`printf("  %s", "private:")`
+		//$1() {}                 // comment-out this line to forbid
+		//$1& operator=(const $1& other);
+		//$1(const $1& other);  // comment-out this line to forbid
+
+    };
+
+    $1::$1($2) {
+        ${0:TARGET}
+    }
+
+snippet     class-without-constructor
+abbr        class {}
+    class ${1:#:name} {
+        ${2}
+    };
+
+snippet     struct
+abbr        struct {}
+options     head
+    struct ${1:#:Name} {
+        ${0:TARGET}
+    };
+
+# #include<iostream>
+snippet     p
+options     head
+  std::cout << ${0:TARGET} << std::endl;
+
+snippet     pimpl1
+alias       pimpl, p-impl1, p_impl1
+abbr        p(const char*);
+options     head
+    static void p(const char *msg = "") { std::cout << msg << std::endl; }
+
+snippet     pimpl2
+alias       p-impl2, p_impl2
+abbr        p(...){...}
+options     head
+    static void p(char const* msg) { p(msg, ""); }
+    template <class T>
+    static void p(T const& t) { p("", t); }
+    template <class T>
+    static void p(char const* msg, T const& t) {
+        // FIXME how to clear the content of oss in case specified as static
+        std::ostringstream oss;
+        oss << t;
+        std::cout << msg << oss.str() << std::endl;
+    }
+
+snippet     pdecl2
+alias       p-decl2, p_decl2
+abbr        p(...);
+options     head
+    static void p(char const* msg);
+    template <class T>
+    static void p(T const& t);
+    template <class T>
+    static void p(char const* msg, T const& t);
+

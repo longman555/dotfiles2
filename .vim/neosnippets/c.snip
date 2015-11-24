@@ -1,0 +1,772 @@
+# #include <...>
+snippet     inc
+alias       #inc, #include
+options     head
+    #include <${1:stdio}.h>${0}
+
+# #include "..."
+snippet     inc2
+alias       #inc2, #include2
+options     head
+    #include "${1}.h"${0}
+
+snippet     ifndef
+alias       #ifndef
+abbr #ifndef ... #define ... #endif
+options     head
+    #ifndef $1
+    #define ${1:#:SYMBOL}
+    ${0}
+    #endif  // #ifndef $1
+
+snippet     def
+alias       #def, #define
+options     head
+    #define 
+
+# Include-Guard
+snippet     once
+abbr        include-guard
+options     head
+    #ifndef ${1:SYMBOL}
+        #define $1
+
+        ${0:TARGET}
+    #endif /* end of include guard */
+
+snippet     comment
+alias       /*
+    /* 
+     * ${1:#:comment} 
+     */
+    ${0}
+
+snippet     if
+abbr        if () {}
+    if (${1:#:condition}) {
+        ${0:TARGET}
+    }
+
+snippet     else
+    else {
+        ${0:TARGET}
+    }
+
+snippet     elseif
+alias       elif
+    else if (${1:#:condition}) {
+        ${0:TARGET}
+    }
+
+snippet     ifelse
+abbr        if () {} else {}
+    if (${1:#:condition}) {
+        ${2:TARGET}
+    } 
+    else {
+        ${3}
+    }
+
+snippet     for
+alias       fori, forgt
+abbr        for-greater-than () {}
+    for (${1} = 0; $1 < ${2}; ++$1) {
+        ${3:TARGET}
+    }
+
+snippet     ford
+alias       form, forlt
+abbr        for-less-than(){}
+    for (${1} = ${2}; $1 >${3:=} ${4}; --$1) {
+        ${5:TARGET}
+    }
+
+snippet     while
+abbr        while () {}
+    while (${1:#:condition}) {
+        ${0:TARGET}
+    }
+
+snippet     do_while
+alias       do
+    do {
+        ${0:TARGET:code}
+    } while (${1:#:condition});
+
+snippet     switch
+abbr        switch () {}
+	switch (${1:#:var}) {
+		case ${2:#:val}:
+			${3:TARGET}
+			break;
+		${4}
+	}${0}
+
+snippet     case
+abbr        case Val: ... break;
+	case ${1:#:val}:
+		${2:TARGET}
+		break;
+	${0}
+
+snippet     default
+abbr        default: ... break;
+	default:
+		${1:#:something}
+		break;
+
+snippet     function
+alias       func
+abbr        func() {}
+    ${1:void} ${2:#:func_name}(${3:#:args}) {
+        ${0:TARGET}
+    }
+
+snippet     struct
+abbr        struct {}
+    struct ${1:#:name} {
+        ${0:TARGET:data}
+    };
+
+# Typedef struct
+snippet     struct_typedef
+    typedef struct ${1:#:tag name} {
+        ${0:TARGET:data}
+    } ${2:#:name};
+
+snippet     enum
+abbr        enum {}
+    enum ${1:#:name }{
+        ${0:TARGET},
+    };
+
+snippet     sizeof
+alias       size
+    sizeof(${0:TARGET})
+
+# hard-tab is necessary; C indent doesn't support this.
+snippet     main
+abbr        main(int argc, char *argv[])
+	int main(int argc, char *argv[]) {
+		
+		${0:TARGET}
+		
+		return ${1:EXIT_SUCCESS};
+	}
+
+# no argument main function
+snippet     mainvoid
+abbr        main(void)
+	int main(void) {
+	
+		${0:TARGET}
+	
+		return ${1:EXIT_SUCCESS};
+	}
+
+# Ternary conditional operator
+snippet     condition
+alias       ? :
+abbr    conditional operator
+    (${1:#:condition}) ? ${2:#:a} : ${3:#:b}${0:#:;}
+
+snippet     typedef
+    typedef ${1:#:base_type} ${2:#:custom_type};${0}
+
+# <signal.h>
+snippet     signal
+alias       
+abbr        signal(int,handler);
+options     head
+    signal(${1:#:signum}, ${2:#:sighandler_t});${0}
+
+snippet     sigaction
+alias       
+abbr        sigaction(int,*sa,*sa);
+options     head
+    sigaction(${1:#:signum}, ${2:#:*sa}, ${3:#:*sa_old});${0}
+
+# <stdio.h>
+snippet     printf
+alias       pf
+abbr        printf("...\n", ...);
+    printf("${1}\n", ${2});${0}
+
+snippet     fprintf
+alias       fpf
+abbr        fprintf(..., "...\n", ...);
+    fprintf(${1:stderr}, "${2}\n"${3});${0}
+
+snippet     snprintf
+abbr        snprintf(buf,size,fmt,args)
+options     head
+    snprintf(${1:#:dest}, ${2:#:sizeof dest}, "${3:#:format}", ${4:#:args})${0}
+
+snippet     sscanf
+alias       
+abbr        sscanf(src,fmt,dest-args);
+options     head
+    sscanf(${1:#:src}, ${2:#:format}, ${3:#:dest-args...})${0}
+
+snippet     puts
+abbr        puts(char*)
+    puts(${1:""});${0}
+
+snippet     fputc
+abbr        int fputc(int,FILE*)
+    fputc(${1:#:char}, ${2:stderr});${0}
+
+snippet     fputs
+abbr        int fputs(const char*,FILE*)
+    fputs(${1:""}, ${2:stderr});${0}
+
+snippet     fgetc
+abbr        int fgetc(FILE*)
+    fgetc(${1:stdin});${0}
+
+snippet     fgets
+abbr        char* fgets(char*,int,FILE*)
+options     word
+    fgets(${1:#:buf}, ${2:#:num}, ${3:stdin})${0}
+
+snippet     perror
+abbr        perror()
+options     head
+    perror(${1:#:"func_name"});${0}
+
+snippet     p
+alias       
+abbr        p-helper;
+options     head
+    static void p(const char* msg) { printf("%s\n", msg); }
+
+snippet     perrorexit
+alias       perror_then_exit
+abbr        perror(),exti(1)
+options     head
+    perror(${1:#:"func_name"}), exit(1);${0}
+
+snippet     die-decl
+alias       
+abbr        static int die(char*)
+options     head
+    static int die(const char* message);
+
+snippet     die-impl
+alias       
+abbr        int die(char*)
+options     head
+    static int die(const char* message) {
+        if (errno) {
+            perror(message);
+            exit(errno);
+        }
+        else {
+            fprintf(stderr, "%s\n", message);
+            exit(255);
+        }
+    }
+
+snippet     hdie-decl
+alias       dieh-decl
+abbr        die-decl for netdb
+options     head
+    static int hdie(const char* message);
+
+snippet     hdie-impl
+alias       dieh-impl
+abbr        die-impl for netdb
+options     head
+    static int hdie(const char* message) {
+        if (h_errno) {
+            herror(message);
+            exit(h_errno);
+        }
+        else {
+            fprintf(stderr, "%s\n", message);
+            exit(255);
+        }
+    }
+
+snippet     gaidie-decl
+abbr        die-decl for gai
+options     head
+    static int gaidie(int errcode);
+
+snippet     gaidie-impl
+abbr        die-impl for gai
+options     head
+    static int gaidie(int errcode) {
+        if (errcode == EAI_SYSTEM) {
+            perror("getaddrinfo");
+            exit(errcode);
+        }
+        else {
+            fprintf(stderr, "%s\n", gai_strerror(errcode));
+            exit(errcode);
+        }
+    }
+
+snippet     fopen
+abbr        fopen("path","mode")
+options     word
+    fopen(${1:#:path}, ${2:#:mode})${0}
+
+snippet     fopen2
+abbr        fopen("...","...");-fclose()
+options     head
+    ${1:fp = }fopen("${2:PATH}", "${3:MODE}");
+    ${0:TARGET}
+    fclose($1);
+
+snippet     ifopenfile
+abbr        if ((fp=fopen)==-1){}
+options     head
+    if ((${1:#:fp} = fopen("${2:#:path}", "${3:#:mode}")) == NULL) {
+        perror("fopen"), exit(1);
+    }
+    ${0:TARGET}
+    fclose($1);
+#    if (feof($1)) {      // fopen returns NULL whether EOF or actually error occurs
+#        clearerr($1);    // should consider to exit(0);
+#    }
+#    else if (ferror($1)) {
+#        perror("${4:#:cause of err}"), exit(1);${0}
+#    }
+
+snippet     freopen
+abbr        freopen(path,mode,fp)
+options     word
+    freopen(${1:#:path or NULL}, ${2:#:mode}, ${3:#:fp})${0}
+
+snippet     freopen2
+abbr        fp = freopen(path,mode,fp);
+options     head
+    ${1:#:fp} = freopen(${2:#:path or NULL}, ${3:#:mode}, $1);${0}
+
+# error handling for stdin
+snippet     stdinerror
+abbr        stdin error handling
+options     head
+    if (feof(stdin)) {
+        exit(0);
+    }
+    else if (ferror(stdin)) {
+        perror("${1:#:cause of err}"), exit(1);${0}
+    }
+
+#snippet fgets
+#abbr fgets(row, length, file);
+#    fgets(${0:ROW}, ${1:LENGTH}, ${2:FILE});
+
+snippet     fflush
+abbr        fflush
+    fflush(${1:NULL});${0}
+
+# <string.h>
+
+snippet     memset
+alias       
+abbr        memset(void*,int,size_t)
+options     head
+    memset(${1:#:target}, ${2:#:value}, ${3:#:size});${0}
+
+snippet     memcpy
+alias       
+abbr        memcpy(void*,c_void*,size_t)
+options     head
+    memcpy(${1:#:dst}, ${2:#:src}, ${3:#:size});${0}
+
+snippet     memmove
+alias       
+abbr        memmove(void*,c_void*,size_t)
+options     head
+    memmove(${1:#:dst}, ${2:#:src}, ${3:#:size});${0}
+
+snippet     strcpy
+abbr        strcpy(char*,char*)
+options     word
+    strcpy(${1:#:dst}, ${2:#:src});${0}
+
+snippet     strncpy
+abbr        strncpy(char*,char*,int)
+options     word
+    strncpy(${1:#:dst}, ${2:#:src}, ${3:#:num});${0}
+
+snippet     strcmp
+abbr        int strcmp(c char*,c char*);
+options     word
+    strcmp(${1:#:lhs}, ${2:#:rhs})${0}
+
+snippet     strncmp
+abbr        int strncmp(c char*,c char*,size_t)
+options     word
+    strncmp(${1:#:lhs}, ${2:#:rhs}, ${3:#:num})${0}
+
+snippet     strchr
+abbr        char* strchr(char*,int)
+options     word
+    strchr(${1:#:src}, '${2:#:target char}')${0}
+
+snippet     strstr
+alias       
+abbr        char* strstr(cchar*,cchar*);
+options     word
+    strstr(${1:#:src}, ${2:#:target})${0:TARGET}
+
+snippet     strtok
+abbr        strtok(char*,const char*)
+    ${1:#:tkn_p} = strtok(${2:#:src/NULL}, ${3:" "});
+    ${0}
+
+snippet     strtok2
+abbr        strtok helper1
+    ${1:#:tkn_p} = strtok(${2:#:src}, ${3:" "});
+    while ($1 != NULL) {
+        ${0:TARGET}
+        		
+        		$1 = strtok(NULL, $3);
+    }
+
+snippet     strtok3
+abbr        strtok helper2 
+    while ((${1:#:tkn_p} = strtok(($1 == NULL ? ${2:#:src} : NULL), ${3:" "})) != NULL) {
+        ${0:TARGET}
+    }
+
+snippet     strdup
+alias       
+abbr        char* strdup(char*)
+options     word
+    strdup(${1:#:src})${0}
+
+# stdlib.h
+snippet     qsort
+abbr        void qsort(void*,size_t,size_t,func_ptr);
+options     head
+    qsort(${1:#:array}, ${2:#:e_num}, sizeof(${3:#:e_byte_size}), ${4:compare});${0}
+
+snippet     comparator
+alias       compare
+abbr        int comparator(const void*,const void*);
+options     head
+    int compare(const void* ${1:lhs}, const void* ${2:rhs}) {
+        ${0:TARGET}
+    }
+
+# <unistd.h>
+snippet     read
+alias       
+abbr        ssize_t read(fd,b,bn);
+options     word
+    read(${1:#:fd}, ${2:#:buf}, ${3:#:buflen})${0}
+
+snippet     write
+alias       
+abbr        ssize_t write(fd,b,bn);
+options     word
+    write(${1:#:fd}, ${2:#:buf}, ${3:#:buflen})${0}
+
+snippet     getcwd
+alias       current_directory
+abbr        getcwd(buf,size)
+options     word
+    getcwd(${1:#:buf}, sizeof($1))${0}
+
+snippet     getcwd_w/error
+alias       current_directory_w/error
+abbr        if(getcwd(buf,size)==NULL)
+options     head
+    if (getcwd(${1:#:buf}), sizeof($1) == NULL) {
+        perror("getcwd"), exit(1);
+    }
+    ${0}
+
+snippet     chdir
+alias       
+abbr        chdir(char*to_path)
+options     word
+    chdir(${1:#:char*to path})${0}
+
+snippet     chdir_w/error
+alias       
+abbr        if(chdir(char*to_path)==-1)
+options     head
+    if (chdir(${1:#:char*to path}) == -1) {
+        perror("chdir"), exit(1);
+    }
+    ${0}
+
+snippet     stat
+alias       
+abbr        stat(char*,&struct stat)
+options     word
+    stat(${1:#:path}, ${2:#:&struct stat})${0}
+
+snippet     lstat
+alias       
+abbr        lstat(char*,&struct stat)
+options     word
+    lstat(${1:#:path}, ${2:#:&struct stat})${0}
+
+snippet     dup
+alias       
+abbr        int dup(int)
+options     head
+    dup(${1:#:oldfd})${0}
+
+snippet     dup2
+alias       
+abbr        int dup2(int,int)
+options     word
+    dup2(${1:#:oldfd}, ${2:#:newfd})${0}
+
+snippet     popen
+alias       
+abbr        FILE* popen(char*,char*);
+options     word
+    popen(${1:#:command}, ${2:#:mode_r_or_w})${0}
+
+snippet     pclose
+alias       
+abbr        int pclose(FILE*);
+options     word
+    pclose(${1:#:fp})${0}
+
+# <sys/types.h> & <dirent.h>
+snippet     opendir
+alias       
+abbr        opendir(path)
+options     word
+    opendir(${1:#:path})${0}
+
+snippet     opendir_w/error
+alias       
+abbr        if(opendir()==NULL){}
+options     head
+    if ((${1:#:DIR*} = opendir(${2:#:path})) == NULL) {
+        perror("opendir"), exit(1);
+    }
+    ${0}
+
+snippet     readdir
+alias       
+abbr        readdir(dirp)
+options     word
+    readdir(${1:#:DIR*})${0}
+
+snippet     readdir_w/error
+alias       
+abbr        if(readdir()!=NULL){}
+options     head
+    errno = 0;
+    while ((${1:#:stct dirent*} = readdir(${2:#:DIR*})) != NULL) {
+        ${0:TARGET}
+    }
+    if (errno != 0)    // error occured
+        perror("readdir"), exit(1);
+
+snippet     readdir_r
+alias       
+abbr        readdir_r(dp,dep,depp)
+options     word
+    readdir(${1:#:DIR*}, ${2:#:dirent*}, ${3:#:dep*})${0}
+
+snippet     readdir_r_w/error
+alias       
+abbr        if(readdir==0){}
+options     head
+    errno = 0;
+    while (readdir(${1:#:dp}, ${2:#:dirent*}, &${3:#:dep*}) == 0 && $3 != NULL) {
+        ${0}
+    }
+
+snippet     closedir_w/error
+alias       
+abbr        if(closedir!=0){}
+options     head
+    if (closedir(${1:#:DIR*}) != 0)
+        perror("closedir"), exit(1);
+
+snippet     directorystream1
+alias       dirstream-readdir
+abbr        full-readdir:open/read/close
+options     head
+    if ((${1:#:DIR*} = opendir(${2:#:path})) == NULL)
+        perror("opendir"), exit(1);
+
+    while ((${3:#:dirent*} = readdir($1)) != NULL) {
+        ${0:TARGET}
+    }
+
+    if (errno != 0)
+        perror("readdir"), exit(1);
+
+    if (closedir($1) != 0)
+        perror("closedir"), exit(1);
+
+snippet     directorystream2
+alias       dirstream-readdir_r
+abbr        full-readdir_r:open/read/close
+options     head
+    if ((${1:#:DIR*} = opendir(${2:#:path})) == NULL)
+        perror("opendir"), exit(1);
+
+    errno = 0;
+    ${3:#:struct dirent*} = malloc(sizeof(struct dirent));
+    ${4:#:struct dirent**} = NULL;
+    while (readdir_r($1, $3, $4) == 0 && $4 != NULL) {
+        ${0:TARGET}
+    }
+
+    if (errno != 0)
+        perror("readdir"), exit(1);
+
+    if (closedir($1) != 0)
+        perror("closedir"), exit(1);
+
+# <pwd.h>
+snippet     getpwnam
+alias       
+abbr        passwd* getpwnam(name)
+options     word
+    getpwnam(${1:#:name})${0}
+
+snippet     getpwuid
+alias       
+abbr        passwd* getpwuid(uid)
+options     word
+    getpwuid(${1:#:uid})${0}
+
+snippet     getpwnam_r
+alias       
+abbr        int getpwnam_r(5 args)
+options     word
+    getpwnam_r(${1:#:name}, ${2:#:passwd*}, ${3:#:buf}, ${4:#:bufsize}, &${5:#:passwd*})${0}
+
+snippet     getpwuid_r
+alias       
+abbr        int getpwuid_r(5 args)
+options     word
+    getpwuid_r(${1:#:uid}, ${2:#:passwd*}, ${3:#:buf}, ${4:#:buf size}, &${5:#:passwd*})${0}
+
+snippet     getpwnam_r_w/helper
+alias       
+abbr        getpwnam_r-helper
+options     head
+    ${1:#:buf_size} = sysconf(_SC_GETPW_R_SIZE_MAX);
+    if ($1 == -1)
+        $1 = 16384;     // sufficient size
+
+    ${2:#:buf} = malloc($1);
+    if (buf == NULL)
+        perror("malloc"), exit(EXIT_FAILURE);
+
+    ${3:#:status} = getpwnam_r(${4:#:name}, ${5:#:passwd*}, $2, $1, &${6:#:passwd*});
+    if ($6 == NULL) {
+        if ($3 == 0)
+            printf("Not found\n");
+        else {
+            errno = $3;
+            perror("getpwnam_r");
+        }
+        exit(EXIT_FAILURE);
+    }
+    ${0}
+
+snippet     getpwuid_r_w/helper
+alias       
+abbr        getpwuid_r-helper
+options     head
+    ${1:#:size_t buf_size} = sysconf(_SC_GETPW_R_SIZE_MAX);
+    if ($1 == -1)
+        $1 = 16384;     // sufficient size
+
+    ${2:#:char *buf} = malloc($1);
+    if ($2 == NULL)
+        perror("malloc"), exit(EXIT_FAILURE);
+
+    ${3:#:status} = getpwuid_r(${4:#:uid}, ${5:#:&passwd*}, $2, $1, &${6:#:passwd*});
+    if ($6 == NULL) {
+        if ($3 == 0)
+            printf("Not found\n");
+        else {
+            errno = $3;
+            perror("getpwuid_r");
+        }
+        exit(EXIT_FAILURE);
+    }
+    ${0}
+
+# <grp.h>
+snippet     getgrnam
+alias       
+abbr        group* getgrnam(name)
+options     word
+    getgrnam(${1:#:name})${0}
+
+snippet     getgrgid
+alias       
+abbr        group* getgrgid(gid)
+options     word
+    getgrgid(${1:#:gid})${0}
+
+snippet     getgrnam_r
+alias       
+abbr        int getgrnam_r(5 args)
+options     word
+    getgrnam_r(${1:#:name}, ${2:#:group*}, ${3:#:buf}, ${4:#:bufsize}, &${5:#:group*})${0}
+
+snippet     getgrgid_r
+alias       
+abbr        int getgrgid_r(5 args)
+options     word
+    getgrgid_r(${1:#:gid}, ${2:#:group*}, ${3:#:buf}, ${4:#:bufsize}, &${5:#:group*})${0}
+
+snippet     getgrnam_r_w/helper
+alias       
+abbr        getgrnam_r-helper
+options     head
+    ${1:#:buf_size} = sysconf(_SC_GETGR_R_SIZE_MAX);
+    if ($1 == -1)
+        $1 = 16384;     // sufficient size
+
+    ${2:#:buf} = malloc($1);
+    if ($2 == NULL)
+        perror("malloc"), exit(EXIT_FAILURE);
+
+    ${3:#:status} = getgrnam_r(${4:#:name}, ${5:#:group*}, $2, $1, &${6:#:group*});
+    if ($6 == NULL) {
+        if ($3 == 0)
+            printf("Not found\n");
+        else {
+            errno = $3;
+            perror("getgrnam_r");
+        }
+        exit(EXIT_FAILURE);
+    }
+    ${0}
+
+snippet     getgrgid_r_w/helper
+alias       
+abbr        getgrgid_r-helper
+options     head
+    ${1:#:buf_size} = sysconf(_SC_GETGR_R_SIZE_MAX);
+    if ($1 == -1)
+        $1 = 16384;     // sufficient size
+
+    ${2:#:buf} = malloc($1);
+    if ($2 == NULL)
+        perror("malloc"), exit(EXIT_FAILURE);
+
+    ${3:#:status} = getgrgid_r(${4:#:gid}, ${5:#:group*}, $2, $1, &${6:#:group*});
+    if ($6 == NULL) {
+        if ($3 == 0)
+            printf("Not found\n");
+        else {
+            errno = $3;
+            perror("getgrgid_r");
+        }
+        exit(EXIT_FAILURE);
+    }
+    ${0}

@@ -1,0 +1,37 @@
+scriptencoding utf-8
+
+" set the column width on the screen
+set columns=90
+" the number of lines on the screen
+set lines=40
+
+" the number of lines for command line on the screen
+set cmdheight=2
+
+" Enable mouse support
+set mouse=a
+
+" font setting
+if has("gui_running")
+    if has("gui_gtk2")
+        "echo "gui_gtk2"
+        "set guifont=Luxi\ Mono\ 12
+        "set guifont=Inconsolata\ 11
+        set guifont=Ricty\ Discord\ 11
+        set background=dark
+        colorscheme solarized
+    elseif has("x11")
+        "echo "x11"
+        " Also for GTK 1
+        set guifont=*-lucidatypewriter-medium-r-normal-*-*-180-*-*-m-*-*
+        set background=dark
+        colorscheme solarized
+    elseif has("gui_win32")
+        "echo "gui_win32"
+        set guifont=MeiryoKe_Console:h11:cSHIFTJIS
+        "set guifont=Ricty\ Discord\ 10
+        set background=dark
+        colorscheme solarized
+    endif
+endif
+

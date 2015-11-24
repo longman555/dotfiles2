@@ -1,0 +1,236 @@
+
+snippet     comment
+alias       
+abbr        comment
+options     head
+    /*
+     * ${1:#: say something...}
+     */
+     ${0}
+
+snippet     using
+alias       
+abbr        using
+options     head
+    using System.${1:#:name space};${0}
+
+snippet     if
+abbr        if(cond){}
+    if (${1:#:condition}) {
+        ${2:TARGET}
+    }
+
+snippet     else if
+alias       elif
+abbr        else if(cond){}
+    else if (${1:#:condition}) {
+        ${2:TARGET}
+    }
+
+snippet     else
+abbr        else {}
+options     head
+    else {
+        ${1:TARGET}
+    }
+
+snippet     for
+alias       fori, forgt
+abbr        for-greater-than(){}
+options     head
+    for (var ${1:i} = 0; $1 < ${2:#:limit}; ++$1) {
+        ${0:TARGET}
+    }
+
+snippet     ford
+alias       form, forlt
+abbr        for-less-than(){}
+options     head
+    for (var ${1:i} = ${2:#:init_val}; i >${3:= }${4:0}; --$1) {
+        ${0:TARGET}
+    }
+
+snippet     foreach
+abbr        foreach(:)
+options     head
+    foreach (var ${1:e} in ${2:src}) {
+        ${0:TARGET}
+    }
+
+snippet     while
+abbr        while () {}
+    while (${1:#:condition}) {
+        ${0:TARGET}
+    }
+
+snippet     do_while
+alias       do
+    do {
+        ${0:TARGET:code}
+    } while (${1:#:condition});
+
+snippet     switch
+abbr        switch () {}
+	switch (${1:#:var}) {
+		case ${2:#:val}:
+			${3:TARGET}
+			break;
+		${4}
+	}${0}
+
+snippet case
+abbr    case Val: ... break;
+	case ${1:#:val}:
+		${2:TARGET}
+		break;
+	${0}
+
+snippet default
+abbr    default: ... break;
+	default:
+		${1:#:something}
+		break;
+
+snippet     lock
+abbr        lock (obj){}
+options     head
+    lock (${1:#:lock_obj}) {
+        ${0:TARGET}
+    }
+
+snippet     fixed
+alias       
+abbr        fixed(expr){}
+options     head
+    fixed (${1:expr}) {
+        ${0:TARGET}
+    }
+
+snippet     var
+abbr        variable delaration
+    var ${1:#:var_name} = ${2:#:value};${0}
+
+snippet     as
+abbr        as operator
+options     head
+    var ${1:#:var} = ${2:#:src_var} as ${3:#:target type};
+    if ($1 != null) {
+        ${0:TARGET}
+    }
+
+snippet condition
+alias   ?:, three_operand_operator
+abbr    conditional operator
+    (${1:#:condition}) ? ${2:#:a} : ${3:#:b}${0:#:;}
+
+snippet     class
+abbr        full declaration
+    ${1:public }${2:partial }class ${3:`expand("%:r")`}${4:\: } {
+        ${0:TARGET}
+    }
+
+snippet     class2
+abbr        simple class+Main
+    /*
+     * ${1:#:description}
+     */
+    using System;
+
+    internal class ${2:`expand("%:r")`} {
+
+        public static void Main(string[] args) {
+
+            ${0:TARGET}
+
+        }
+    }
+
+snippet     classfoo
+abbr        class Foo{}
+options     head
+    class Foo {
+        static Foo(){}
+        public Foo(){}
+        ~Foo(){}
+    }
+
+snippet     property
+alias       full_property
+abbr        + T Prop {get{...}set{...}}
+options     head
+    ${1:public }${2:#:Type} ${3:#:propName} {
+        get {
+            ${5:#:getter }
+        }
+        ${4:private }set {
+            ${6:#:setter}
+        }
+    }
+
+snippet     property2
+alias       simple_property
+abbr        simple getter/setter
+options     head
+    ${1:public }${2:#:Type} ${3:#:propName} { get; ${4:private }set; }${0}
+
+snippet     indexer
+abbr        T this[params1,...] {get{}set{}}
+options     head
+    ${1:public }${2:#:Type} this[${3:#:params1,...}] {
+        get {
+            ${4:#: getter}
+        }
+        ${5:private }set {
+            ${6:#:setter}
+        }
+    }
+
+# operator overload
+snippet     op++
+alias       ++op, op--, --op, opinc, opdec, incop, decop
+abbr        operator ++/--
+options     head
+    public static ${1:#:T} operator++($1 self) {
+        ${2:TARGET}
+        return self;
+    }
+    public static $1 operator--($1 self) {
+        ${3:TARGET} 
+    }
+
+snippet     castop
+alias       opcast
+abbr        operator T()
+options     head
+    public static ${1:explicit} operator ${2:#:T}(${3:#:My} self) {
+        ${4:TARGET}
+    }
+
+
+snippet     main
+alias       Main
+abbr        static void Main(string[])
+options     head
+    public static void Main(string[] args) {
+        ${0:TARGET}
+    }
+
+# System.Console class
+snippet     wl
+alias       sysout, sout
+abbr        System.Console.WriteLine()
+options     head
+    System.Console.WriteLine("${1:#:string}"${2:#:+arg});${0}
+
+snippet     wlf
+alias       sysoutf, soutf
+abbr        WriteLine("{0}")
+options     head
+    System.Console.WriteLine("${1:#:string}", ${2:#:args});${0}
+
+snippet     format
+abbr        String.format
+options     head
+    System.String.Format("${1:#:fmt}", ${2:#:args...});${0}
+
+
