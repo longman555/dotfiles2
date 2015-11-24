@@ -50,9 +50,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " My Bundles here:
 " Refer to |:NeoBundle-examples|.
 " Note: You don't set neobundle setting in .gvimrc!
-
-NeoBundle 'vim-jp/vimdoc-ja'
-
 NeoBundle 'Shougo/vimproc.vim', {
             \ 'build' : {
             \     'windows' : 'tools\\update-dll-mingw',
@@ -73,6 +70,7 @@ NeoBundle 'tyru/caw.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 
+NeoBundle 'vim-jp/vimdoc-ja'
 "colorschemes
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'tomasr/molokai'
