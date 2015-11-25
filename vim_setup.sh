@@ -28,15 +28,15 @@ fi
 
 # Set up for Neosnippet 
 # 最初にvimを起動してNeoBundleInstallを実行しないとエラー
-SNIP_DIR=${THIS_DIR}/.vim/neosnippets
-NEOSNIPPET_DIR=${THIS_DIR}/.vim/bundle/neosnippet-snippets/neosnippets
-for snip in `ls $SNIP_DIR`; do
-    if [ "_${snip##*.}" = "_snip" ]; then
-#        rm ${NEOSNIPPET_DIR}/${snip}
-#        ln -sf ${SNIP_DIR}/${snip} ${NEOSNIPPET_DIR}/${snip}
-        cp -f ${SNIP_DIR}/${snip} ${NEOSNIPPET_DIR}/${snip}
-    fi
-done
+#SNIP_DIR=${THIS_DIR}/.vim/neosnippets
+#NEOSNIPPET_DIR=${THIS_DIR}/.vim/bundle/neosnippet-snippets/neosnippets
+#for snip in `ls $SNIP_DIR`; do
+#    if [ "_${snip##*.}" = "_snip" ]; then
+#        cp -f ${SNIP_DIR}/${snip} ${NEOSNIPPET_DIR}/${snip}
+#    fi
+#done
+mv ${THIS_DIR}/.vim/bundle/neosnippet-snippets/neosnippets ${THIS_DIR}/.vim/bundle/neosnippet-snippets/neosnippets_bu
+ln -sfT ${THIS_DIR}/.vim/neosnippets ${THIS_DIR}/.vim/bundle/neosnippet-snippets/neosnippets
 
 # Set up for Quickrun
 cp -f ${THIS_DIR}/.vim/vim-quickrun/autoload/quickrun.vim ${THIS_DIR}/.vim/bundle/vim-quickrun/autoload/quickrun.vim
