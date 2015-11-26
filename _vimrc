@@ -64,6 +64,9 @@ NeoBundle 'Shougo/neocomplete'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 
+" NERDTree: コメントアウトすべし
+"NeoBundle 'scrooloose/nerdtree'
+
 " \c to comment-out
 NeoBundle 'tyru/caw.vim'   
 
