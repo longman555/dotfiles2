@@ -1,29 +1,42 @@
+@echo off
+rem git submodule update をバッチファイルでうまく実行できない。
+rem 当面の間、最初に手動で %~dp0%\.vim\bundle\neobundle.vim にて
+rem git submodule update コマンドを実行し、その後このバッチファイルを実行する。
 
 set THIS_DIR=%~dp0
-echo %THIS_DIR%
 mklink C:\Users\arkray2\editor\vim74\_vimrc %THIS_DIR%\_vimrc
 mklink C:\Users\arkray2\editor\vim74\_gvimrc %THIS_DIR%\_gvimrc
-mklink /J C:\Users\arkray2\editor\vim74\bundle %THIS_DIR%\.vim\bundle
+mklink /j C:\Users\arkray2\editor\vim74\bundle %THIS_DIR%\.vim\bundle
 
 rem Set up for NeoBundle
-rem set NB_DIR=%THIS_DIR%\.vim\bundle\neobundle.vim
-rem for %%f in (%NB_DIR%\*) do goto FinishNeoBundleInit
-rem     echo "no neobundle.vim"
-rem     set CURRENT_DIR=%cd%
-rem     cd %NB_DIR%
-rem     git submodule init
-rem rem start /wait git submodule update
-rem     cmd /c git submodule update
-rem     cd %CURRENT_DIR%
-rem     vim -e -c "NeoBundleInstall" -c "q"
-rem :FinishNeoBundleInit
+rem 自動で git submodule init/update を行いたいが、上手くいかない。
+rem git submodule update で処理が実行されず、終了してしまう。
+set NB_DIR=%THIS_DIR%\.vim\bundle\neobundle.vim
+for %%f in (%NB_DIR%\*) do goto FinishNeoBundleInit
+    rem %NB_DIR%が空の場合(neobundle.vimが未初期化の場合)
+REM    set CURRENT_DIR=%cd%
+REM    cd %NB_DIR%
+REM    git submodule init
+REM    cmd /c git submodule update
+REM    cd %CURRENT_DIR%
+REM    vim -e -c "NeoBundleInstall" -c "q"
+:FinishNeoBundleInit
+
+rem 手動で git submodule update を実行しなければならないための措置。
+rem 一度 vim を起動してプラグインをインストールしないと、Neosnippet と
+rem Quickrun 、vimproc に関する以下の処理が失敗する。
+rem 現状、vimproc でのライブラリの生成に失敗してしまう。失敗した場合、
+rem vimproc.vim を削除するか否かのプロンプトがでるが、Noを選ぶこと。
+vim -e -c "NeoBundleInstall" -c "q"
+
+rem vimproc.vim の自動ビルドが失敗してしまうため、ライブラリをダウンロードする
+curl --silent --location https://github.com/Shougo/vimproc.vim/releases/download/ver.9.2/vimproc_win64.dll > %THIS_DIR%\.vim\bundle\vimproc.vim\lib\vimproc_win64.dll
 
 rem Set up for Neosnippet
-rem after git submodule init & update
 move %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets_bu
-mklink /J %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets %THIS_DIR%\.vim\neosnippets
+mklink /j %THIS_DIR%\.vim\bundle\neosnippet-snippets\neosnippets %THIS_DIR%\.vim\neosnippets
 
 rem Set up for Quickrun
 copy %THIS_DIR%\.vim\vim-quickrun\autoload\quickrun.vim %THIS_DIR%\.vim\bundle\vim-quickrun\autoload\
 
-exit /B 0
+exit /b 0
