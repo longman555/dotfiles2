@@ -13,7 +13,6 @@ int dev(int a, int b) { return a / b; }
 
 int main(void) {
 
-    printf("Hello, world!\n");
     printf("1 + 2 = %d\n", add(1, 2));
     printf("4 - 3 = %d\n", sub(4, 3));
     printf("5 * 6 = %d\n", mul(5, 6));
